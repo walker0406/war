@@ -1,7 +1,13 @@
+
 plugins {
     id 'com.android.application'
+    id 'dagger.hilt.android.plugin'
     id 'kotlin-android'
+    id 'kotlin-kapt'
+
 }
+//apply plugin: 'kotlin-kapt'
+//apply plugin: 'dagger.hilt.android.plugin'
 
 android {
     compileSdkVersion 30
@@ -15,6 +21,7 @@ android {
         versionName "1.0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        buildConfigField 'String', 'BASE_URL', "\"https://5e510330f2c0d300147c034c.mockapi.io/\""
     }
 
     buildTypes {
@@ -23,16 +30,28 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
-    compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
-    }
+//    compileOptions {
+//        sourceCompatibility JavaVersion.VERSION_1_8
+//        targetCompatibility JavaVersion.VERSION_1_8
+//    }
     kotlinOptions {
         jvmTarget = '1.8'
     }
     buildFeatures {
-        viewBinding true
         dataBinding true
+    }
+    viewBinding {
+        enabled = true
+    }
+
+    kapt {
+        javacOptions {
+            // These options are normally set automatically via the Hilt Gradle plugin, but we
+            // set them manually to workaround a bug in the Kotlin 1.5.20
+            option("-Adagger.fastInit=ENABLED")
+            option("-Adagger.hilt.android.internal.disableAndroidSuperclassValidation=true")
+        }
+        correctErrorTypes true
     }
 }
 
@@ -50,4 +69,33 @@ dependencies {
     testImplementation 'junit:junit:4.+'
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
+
+
+//    implementation 'com.google.dagger:hilt-android:+'
+//    kapt 'com.google.dagger:hilt-android-compiler:+'
+
+
+    implementation 'com.google.dagger:hilt-android:2.37'
+    kapt 'com.google.dagger:hilt-compiler:2.37'
+//    implementation 'androidx.hilt:hilt-lifecycle-viewmodel:+'
+//    kapt 'androidx.hilt:hilt-compiler:+'
+
+
+    // Networking
+    implementation "com.squareup.retrofit2:retrofit:+"
+    implementation "com.squareup.retrofit2:converter-moshi:+"
+    implementation "com.squareup.okhttp3:okhttp:+"
+    implementation "com.squareup.okhttp3:logging-interceptor:+"
+
+    // Coroutine
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:+"
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:+"
+
+    //glide
+    implementation "com.github.bumptech.glide:glide:+"
+    kapt "com.github.bumptech.glide:compiler:+"
+
+
+
+
 }

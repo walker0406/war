@@ -1,6 +1,7 @@
 package com.walker.war.ui.notifications
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,7 +11,10 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.walker.war.R
 import com.walker.war.databinding.FragmentNotificationsBinding
-
+import com.walker.war.di.qualifier.Test2
+import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
+@AndroidEntryPoint
 class NotificationsFragment : Fragment() {
 
     private lateinit var notificationsViewModel: NotificationsViewModel
@@ -20,11 +24,16 @@ class NotificationsFragment : Fragment() {
     // onDestroyView.
     private val binding get() = _binding!!
 
+    @Test2
+    @Inject
+    lateinit var url: Any
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        Log.d("guowtest", "notification url=" + url.hashCode())
         notificationsViewModel =
             ViewModelProvider(this).get(NotificationsViewModel::class.java)
 

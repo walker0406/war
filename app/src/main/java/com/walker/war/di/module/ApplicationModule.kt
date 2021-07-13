@@ -31,7 +31,6 @@ class ApplicationModule {
 
 
     @Provides
-    @Test1
     fun provideBaseUrl() = BuildConfig.BASE_URL
 
     @Provides
@@ -67,5 +66,13 @@ class ApplicationModule {
     @Provides
     @Singleton
     fun provideApiHelper(apiHelper: ApiHelperImpl): ApiHelper = apiHelper
+
+
+    @EntryPoint
+    @InstallIn(SingletonComponent::class)
+    interface MyClassInterface {
+        fun getFoo(): TestAny
+
+    }
 }
 

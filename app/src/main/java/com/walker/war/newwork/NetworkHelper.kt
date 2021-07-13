@@ -13,8 +13,8 @@ import javax.inject.Singleton
 /**
  * Created by admin on 2021/7/10.
  */
-@ActivityScoped
-class NetworkHelper @Inject constructor(@ActivityContext private val context: Context) {
+@Singleton
+class NetworkHelper @Inject constructor(@ApplicationContext private val context: Context) {
 
     fun isNetworkConnected(): Boolean {
         var result = false

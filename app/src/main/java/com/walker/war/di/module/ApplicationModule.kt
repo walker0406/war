@@ -4,17 +4,11 @@ import com.walker.war.BuildConfig
 import com.walker.war.data.ApiHelperImpl
 import com.walker.war.data.api.ApiHelper
 import com.walker.war.data.api.ApiService
-import com.walker.war.di.qualifier.Test1
 import com.walker.war.di.qualifier.Test2
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.EntryPoint
 import dagger.hilt.InstallIn
-import dagger.hilt.android.components.ActivityComponent
-import dagger.hilt.android.components.FragmentComponent
-import dagger.hilt.android.components.ViewComponent
-import dagger.hilt.android.scopes.ActivityScoped
-import dagger.hilt.android.scopes.FragmentScoped
 import dagger.hilt.components.SingletonComponent
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
@@ -32,6 +26,7 @@ class ApplicationModule {
 
     @Provides
     fun provideBaseUrl() = BuildConfig.BASE_URL
+
 
     @Provides
     @Test2

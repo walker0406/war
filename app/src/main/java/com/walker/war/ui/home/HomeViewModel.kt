@@ -1,10 +1,12 @@
 package com.walker.war.ui.home
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.walker.war.data.MainRepository
+import com.walker.war.data.model.User
 import com.walker.war.newwork.NetworkHelper
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
@@ -15,6 +17,7 @@ class HomeViewModel @Inject constructor(
     private val mainRepository: MainRepository,
     private val networkHelper: NetworkHelper
 ) : ViewModel() {
+
     init {
         fetchUsers()
     }
@@ -25,14 +28,13 @@ class HomeViewModel @Inject constructor(
     val text: LiveData<String> = _text
 
 
-    init {
-        fetchUsers()
-    }
-
     private fun fetchUsers() {
         viewModelScope.launch {
-          //  _users.postValue(Resource.loading(null))
-            mainRepository.getUsers()
+            //  _users.postValue(Resource.loading(null))
+
+            var list = mainRepository.getUsers()
+            var a: User? = list?.body()?.get(0)
+            Log.d("fetuser=", "=" + Thread.currentThread().name)
 //            if (networkHelper.isNetworkConnected()) {
 //                mainRepository.getUsers().let {
 ////                    if (it.isSuccessful) {

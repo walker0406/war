@@ -9,6 +9,7 @@ import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import com.walker.war.data.api.ApiHelper
 import com.walker.war.data.api.ApiService
 import com.walker.war.databinding.FragmentHomeBinding
 import com.walker.war.di.module.EntryPointTest
@@ -31,7 +32,6 @@ class HomeFragment : Fragment() {
 
     @Inject
     lateinit var networkHelper: NetworkHelper
-
 
 
 

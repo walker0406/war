@@ -8,14 +8,23 @@ import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.viewModelScope
+import androidx.paging.PagedList
+import androidx.paging.Pager
+import androidx.paging.PagingConfig
+import androidx.paging.PagingData
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.OnScrollListener
+import com.walker.war.data.model.User
 import com.walker.war.databinding.FragmentHomeBinding
 import com.walker.war.di.module.EntryPointTest
+import com.walker.war.eproxy.PageSourceTest
 import com.walker.war.eproxy.UserControl
+import com.walker.war.eproxy.UserControlPage
 import com.walker.war.newwork.NetworkHelper
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 
@@ -53,17 +62,23 @@ class HomeFragment : Fragment() {
             textView.text = it
         })
         // binding.rvView.adapter = MainAdapter()
-        var userControl = UserControl()
+        var userControl = UserControlPage()
         userControl.isDebugLoggingEnabled = true
         binding.rvView.adapter = userControl.adapter
         //userControl.requestModelBuild();
         homeViewModel.list.observe(viewLifecycleOwner) {
             //(binding.rvView.adapter as MainAdapter).updateData(it as ArrayList<User>)
-            userControl.setData(it)
-            (binding.rvView.layoutManager as LinearLayoutManager)?.scrollToPositionWithOffset(
-                lasty,
-                lastx
-            )
+            homeViewModel.viewModelScope.launch {
+                userControl.submitData(PagingData.from(it))
+//                Pager(PagingConfig(pageSize = 10)) {
+//                    PageSourceTest(a)
+//                }.flow.cachedIn(viewModelScope)
+//                (binding.rvView.layoutManager as LinearLayoutManager)?.scrollToPositionWithOffset(
+//                    lasty,
+//                    lastx
+//                )
+            }
+
         }
         binding.sfRefresh.setOnRefreshListener {
             homeViewModel.fetchUsers {

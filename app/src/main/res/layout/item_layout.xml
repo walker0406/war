@@ -3,6 +3,7 @@
     <data>
         <variable name="name" type="String" />
         <variable name="email" type="String" />
+        <variable name="image" type="String" />
         <variable name="onClick" type="android.view.View.OnClickListener"/>
     </data>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
@@ -18,6 +19,7 @@
         android:layout_width="60dp"
         android:layout_height="0dp"
         android:padding="4dp"
+        app:imageFromUrl="@{image}"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />

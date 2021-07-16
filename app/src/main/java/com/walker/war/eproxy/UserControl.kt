@@ -22,6 +22,7 @@ class UserControl : TypedEpoxyController<List<User>>() {
                 this.name(it.name)
                 this.email(it.email)
                 this.id(it.id)
+                this.image(it.avatar)
                 this.onClick(View.OnClickListener {
                     Log.d("test","===="+user.name)
                 })

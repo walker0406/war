@@ -1,5 +1,6 @@
 package com.walker.war.di.module
 
+import android.util.Log
 import com.walker.war.BuildConfig
 import com.walker.war.data.ApiHelperImpl
 import com.walker.war.data.api.ApiHelper
@@ -10,10 +11,13 @@ import dagger.Provides
 import dagger.hilt.EntryPoint
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
+import okhttp3.Call
+import okhttp3.EventListener
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
+import java.net.InetAddress
 import javax.inject.Singleton
 
 /**
@@ -38,6 +42,26 @@ class ApplicationModule {
         val loggingInterceptor = HttpLoggingInterceptor()
         loggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY)
         OkHttpClient.Builder()
+            .eventListener(object : EventListener() {
+                override fun callStart(call: Call) {
+                    super.callStart(call)
+                }
+
+                override fun dnsStart(call: Call, domainName: String) {
+                    Log.d("guowtest", "dnsStart")
+                    super.dnsStart(call, domainName)
+                }
+
+                override fun dnsEnd(
+                    call: Call,
+                    domainName: String,
+                    inetAddressList: List<InetAddress>
+                ) {
+                    Log.d("guowtest", "dnsEnd")
+                    super.dnsEnd(call, domainName, inetAddressList)
+                }
+
+            })
             .addInterceptor(loggingInterceptor)
             .build()
     } else OkHttpClient
@@ -64,10 +88,13 @@ class ApplicationModule {
 
 
     @EntryPoint
+    @Singleton
     @InstallIn(SingletonComponent::class)
     interface MyClassInterface {
         fun getFoo(): TestAny
 
     }
+
+
 }
 

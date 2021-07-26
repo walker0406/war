@@ -48,7 +48,6 @@ class ApplicationModule {
                 }
 
                 override fun dnsStart(call: Call, domainName: String) {
-                    Log.d("guowtest", "dnsStart")
                     super.dnsStart(call, domainName)
                 }
 
@@ -57,7 +56,6 @@ class ApplicationModule {
                     domainName: String,
                     inetAddressList: List<InetAddress>
                 ) {
-                    Log.d("guowtest", "dnsEnd")
                     super.dnsEnd(call, domainName, inetAddressList)
                 }
 

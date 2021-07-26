@@ -31,7 +31,6 @@ class LoadingAdapter : LoadStateAdapter<LoadingAdapter.LoadStatusHolder>() {
     }
 
     override fun displayLoadStateAsItem(loadState: LoadState): Boolean {
-        Log.d("guowtest", "LoadState=$loadState")
         return loadState is LoadState.Loading || loadState is LoadState.Error || loadState is LoadState.NotLoading
     }
 

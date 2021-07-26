@@ -4,22 +4,28 @@ import android.util.Log
 import androidx.lifecycle.*
 import androidx.paging.*
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+import com.walker.war.Test
 import com.walker.war.data.MainRepository
 import com.walker.war.data.api.ApiHelper
 import com.walker.war.data.api.ApiService
 import com.walker.war.data.model.User
 import com.walker.war.eproxy.UserPagingSource
 import com.walker.war.newwork.NetworkHelper
+import com.walker.war.newwork.RequestResult
+import com.walker.war.newwork.RequestResult.*
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.collect
+import java.lang.Exception
 import javax.inject.Inject
 
 @HiltViewModel
 class HomeViewModel @Inject constructor(
     private val mainRepository: MainRepository,
-    ) : ViewModel() {
+) : ViewModel() {
     var userid: Lazy<String> = lazy {
         "123"
     }
@@ -40,7 +46,10 @@ class HomeViewModel @Inject constructor(
 
     val text: LiveData<String> = _text
 
-    val testNoValue = MutableLiveData<String>("1")
+    val testNoValue = MutableLiveData<String>()
+
+    val testStateFlow = MutableStateFlow<String>("1")
+    val testShareFlow = MutableSharedFlow<String>()
 
 
     //
@@ -49,7 +58,23 @@ class HomeViewModel @Inject constructor(
             //  _users.postValue(Resource.loading(null))
 
             Log.d("fetuser=", "userid =" + userid.value)
-//            var respond = mainRepository.getUsers()
+            try {
+                var respond = mainRepository.getUsers()
+            } catch (e: Exception) {
+                Log.d("fetuser=", "exception =$e")
+            }
+            var test1 = Test()
+            var test2 = Test()
+            Log.d("fetuser=", "Test.test1=${Test.test1}")
+            Log.d("fetuser=", "Test.test2=${Test.test1}")
+            var result = Loading("123") as RequestResult<String>
+//            when (result) {
+//                is Failure -> TODO()
+//                is Loading -> TODO()
+//                is Success -> TODO()
+//            }
+
+
 //            list.value = respond?.body()
 
             Log.d("fetuser=", "=" + Thread.currentThread().name)

@@ -26,6 +26,7 @@ import com.walker.war.newwork.NetworkHelper
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.*
+import okhttp3.internal.threadName
 import java.lang.Exception
 import javax.inject.Inject
 import kotlin.coroutines.resume
@@ -114,58 +115,92 @@ class HomeFragment : Fragment() {
         }
         var job = viewLifecycleOwner.lifecycleScope.launchWhenStarted {
             adapterTest.loadStateFlow.collectLatest {
-                Log.d("guowtest", "refresh=" + it.refresh)
-                Log.d("guowtest", "append=" + it.append)
-                Log.d("guowtest", "preend=" + it.prepend)
+//                Log.d("guowtest", "refresh=" + it.refresh)
+//                Log.d("guowtest", "append=" + it.append)
+//                Log.d("guowtest", "preend=" + it.prepend)
             }
         }
 
         var scop = CoroutineScope(Dispatchers.IO + SupervisorJob())
+        scop.launch {
+            supervisorScope {
+                launch {
+                }
 
-        var tast1 = viewLifecycleOwner.lifecycleScope.launch(start = CoroutineStart.LAZY) {
-            Log.d("guowtest", "test1")
+            }
         }
 
-        var tast2 = viewLifecycleOwner.lifecycleScope.launch(start = CoroutineStart.LAZY) {
-            Log.d("guowtest", "test2")
-            //throw IndexOutOfBoundsException()
+
+        // Scope 控制我的应用中某一层级的协程
+        val scope = CoroutineScope(SupervisorJob())
+        try {
+            scope.launch {
+                // throw IndexOutOfBoundsException()
+            }
+
+            scope.launch {
+            }
+        } catch (e: Throwable) {
+
         }
+
+
         var handler = CoroutineExceptionHandler { _, throwable ->
             {
                 Log.d("guowtest", "exception")
             }
         }
-        scop.launch(handler) {
-            viewLifecycleOwner.lifecycleScope.launch() {
-                supervisorScope {
-//                    Log.d("guowtest","supervisorScope")
-//                    try {
-//                        tast2.start()
-//                        tast1.start()
-//                    } catch (e: Throwable) {
-//                        Log.d("guowtest","stop")
-//                    }
-
-                }
-
-                Log.d("guowtest", "supervisorScope over")
-                try {
-                    coroutineScope {
-                        Log.d("guowtest", "coroutineScope")
-                        try {
-                            tast2.start()
-                            tast1.start()
-                        } catch (e: Throwable) {
-                            Log.d("guowtest", " coroutineScopestop")
-                        }
-                    }
-                } catch (e: Throwable) {
-                    Log.d("guowtest", "coroutineScope stop")
-                }
-
-
+        val scopetest = CoroutineScope(Job())
+        var jobadf = scopetest.launch {
+            Log.d("guowtest", "test1")
+            try {
+                throw  Throwable()
+            } catch (e: Throwable) {
+                Log.d("guowtest", "exception")
             }
         }
+        jobadf.cancel()
+
+        scopetest.launch {
+            Log.d("guowtest", "test2")
+            try {
+                delay(5000)
+                Log.d("guowtest", "test2")
+            } catch (e: Throwable) {
+                Log.d("guowtest", "exception")
+            }
+        }
+//        scopetest.launch {
+//            async {
+//
+//                Log.d("guowtest", "test1")
+//                try {
+//                    throw  Throwable()
+//                } catch (e: Throwable) {
+//                    Log.d("guowtest", "exception")
+//                }
+//            }
+//
+//            delay(3000)
+//            launch {
+//                Log.d("guowtest", "test2")
+//            }
+
+
+//                try {
+//                    coroutineScope {
+//                        try {
+//                            tast2.start()
+//                            delay(5000)
+//                            tast1.start()
+//                        } catch (e: Throwable) {
+//                        }
+//                    }
+//                } catch (e: Throwable) {
+//                }
+
+
+
 
 
 //        adapter.addLoadStateListener {
@@ -178,11 +213,6 @@ class HomeFragment : Fragment() {
                 adapterTest.refresh()
                 binding.sfRefresh.isRefreshing = false
             }
-
-        }
-        liveData<Int> {
-            emit(2)
-        }.observe(viewLifecycleOwner) {
 
         }
         (homeViewModel.testNoValue as LiveData<*>).observe(viewLifecycleOwner) {
@@ -236,6 +266,14 @@ class HomeFragment : Fragment() {
                 }
             }
         }
+        var job123123 = viewLifecycleOwner.lifecycleScope.launch {
+            homeViewModel.testStateFlow.collect {
+
+            }
+            homeViewModel.testShareFlow.collect {
+
+            }
+        }
 
 
         var testlivedata = liveData<Int> {
@@ -270,16 +308,6 @@ class HomeFragment : Fragment() {
 
         @JvmStatic
         var lasty = 0
-    }
-
-    override fun onPause() {
-        super.onPause()
-        var testlivedata = liveData<Int> {
-            Log.d("guowtest", "testlivedata thread= onPaus ``e" + Thread.currentThread().name)
-            delay(2000)
-            Log.d("guowtest", "testlivedata thread= onPaus e" + Thread.currentThread().name)
-            emit(1)
-        }
     }
 
 

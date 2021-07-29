@@ -1,6 +1,7 @@
 package com.walker.war.ui.dashboard
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,6 +11,11 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.walker.war.R
 import com.walker.war.databinding.FragmentDashboardBinding
+import com.walker.war.ui.home.dp
+import com.walker.war.ui.notifications.NotificationsFragment
+
+val Float.dp
+    get() = this
 
 class DashboardFragment : Fragment() {
 
@@ -20,6 +26,17 @@ class DashboardFragment : Fragment() {
     // onDestroyView.
     private val binding get() = _binding!!
 
+    val test: Int =6
+        get() {
+            Log.d(TAG,"test1 $field")
+            return 2
+        }
+    var test1: Int = 0
+        get() {
+            Log.d(TAG,"test1 $field")
+            field =2
+            return field
+        }
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -35,11 +52,22 @@ class DashboardFragment : Fragment() {
         dashboardViewModel.text.observe(viewLifecycleOwner, Observer {
             textView.text = it
         })
+        Log.d(TAG,"test $test")
+        Log.d(TAG,"test1 $test1")
         return root
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+    }
+
+    override fun onResume() {
+        super.onResume()
+        Log.d(TAG, "onResume")
+    }
+
+    companion object {
+        val TAG = DashboardFragment::class.java.simpleName
     }
 }

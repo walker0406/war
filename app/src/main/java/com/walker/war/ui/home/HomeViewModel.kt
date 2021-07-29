@@ -15,10 +15,8 @@ import com.walker.war.newwork.RequestResult
 import com.walker.war.newwork.RequestResult.*
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.*
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.MutableSharedFlow
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.*
+import okhttp3.internal.wait
 import java.lang.Exception
 import javax.inject.Inject
 
@@ -29,16 +27,18 @@ class HomeViewModel @Inject constructor(
     var userid: Lazy<String> = lazy {
         "123"
     }
+    var list = MutableLiveData<List<User>>()
 
     init {
-        fetchUsers()
+        viewModelScope.launch {
+            list.value = fetchUsers()!!
+        }
     }
 
     val _text = MutableLiveData<String>().apply {
         value = "This is home Fragment"
     }
 
-    var list = MutableLiveData<List<User>>()
 
     var flow: Flow<PagingData<User>>? = null
 
@@ -53,41 +53,28 @@ class HomeViewModel @Inject constructor(
 
 
     //
-    public fun fetchUsers() {
-        viewModelScope.launch {
-            //  _users.postValue(Resource.loading(null))
-
-            Log.d("fetuser=", "userid =" + userid.value)
-            try {
-                var respond = mainRepository.getUsers()
-            } catch (e: Exception) {
-                Log.d("fetuser=", "exception =$e")
-            }
-            var test1 = Test()
-            var test2 = Test()
-            Log.d("fetuser=", "Test.test1=${Test.test1}")
-            Log.d("fetuser=", "Test.test2=${Test.test1}")
-            var result = Loading("123") as RequestResult<String>
+    suspend fun fetchUsers(): List<User> {
+        //  _users.postValue(Resource.loading(null))
+        Log.d("fetuser=", "userid =" + userid.value)
+        var list = emptyList<User>()
+        try {
+            var respond = mainRepository.getUsers()
+            list = respond?.body()!!
+        } catch (e: Exception) {
+            Log.d("fetuser=", "exception =$e")
+        }
+        var test1 = Test()
+        var test2 = Test()
+        Log.d("fetuser=", "Test.test1=${Test.test1}")
+        Log.d("fetuser=", "Test.test2=${Test.test1}")
+//            var result = Loading("123") as RequestResult<String>
 //            when (result) {
 //                is Failure -> TODO()
 //                is Loading -> TODO()
 //                is Success -> TODO()
 //            }
-
-
-//            list.value = respond?.body()
-
-            Log.d("fetuser=", "=" + Thread.currentThread().name)
-
-
-//            if (networkHelper.isNetworkConnected()) {
-//                mainRepository.getUsers().let {
-////                    if (it.isSuccessful) {
-////                        _users.postValue(Resource.success(it.body()))
-////                    } else _users.postValue(Resource.error(it.errorBody().toString(), null))
-//                }
-//            } else _users.postValue(Resource.error("No internet connection", null))
-        }
+        Log.d("fetuser=", "=" + Thread.currentThread().name)
+        return list
     }
 
     ///   var job: Job? = null

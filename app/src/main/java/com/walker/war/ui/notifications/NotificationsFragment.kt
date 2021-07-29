@@ -47,8 +47,18 @@ class NotificationsFragment : Fragment() {
         return root
     }
 
+    override fun onResume() {
+        super.onResume()
+        Log.d(TAG,"onResume")
+    }
+
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
     }
+
+    companion object {
+        val TAG = NotificationsFragment::class.java.simpleName
+    }
+
 }

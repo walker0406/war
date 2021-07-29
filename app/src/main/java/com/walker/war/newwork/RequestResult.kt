@@ -6,7 +6,7 @@ package com.walker.war.newwork
 
 
 sealed class RequestResult<out T> {
-    class Loading<out T>(val value: T) : RequestResult<T>()
+    class Loading() : RequestResult<Nothing>()
     data class Success<out T>(val value: T) : RequestResult<T>()
     data class Failure(val throwable: Throwable?) : RequestResult<Nothing>()
 }

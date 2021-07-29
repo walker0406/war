@@ -9,9 +9,11 @@ import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.*
 import androidx.paging.*
+import androidx.recyclerview.selection.*
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.OnScrollListener
+import com.walker.war.SelectLoopUp
 import com.walker.war.adapter.LoadingAdapter
 import com.walker.war.adapter.PageAdapter
 import com.walker.war.data.api.ApiHelper
@@ -25,12 +27,15 @@ import com.walker.war.eproxy.UserPagingSource
 import com.walker.war.newwork.NetworkHelper
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.*
+import kotlinx.coroutines.channels.*
 import kotlinx.coroutines.flow.*
 import okhttp3.internal.threadName
 import java.lang.Exception
 import javax.inject.Inject
 import kotlin.coroutines.resume
 
+val Float.dp
+    get() = 2
 
 @AndroidEntryPoint
 class HomeFragment : Fragment() {
@@ -50,6 +55,8 @@ class HomeFragment : Fragment() {
 
     lateinit var adapterTest: PageAdapter
 
+    private var tracker: SelectionTracker<Long>? = null
+
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -59,7 +66,6 @@ class HomeFragment : Fragment() {
         var test: EntryPointTest = EntryPointTest()
         test.doSomething(context)
         // Log.d("guowtest", "test url=" + test.url.hashCode())
-
         homeViewModel =
             ViewModelProvider(this).get(HomeViewModel::class.java)
 
@@ -72,20 +78,63 @@ class HomeFragment : Fragment() {
         })
         // binding.rvView.adapter = MainAdapter()
         var userControl = UserControlPage()
+
+
+
+
+
+
+
+
+
+
+
+
         userControl.isDebugLoggingEnabled = true
-        adapterTest = PageAdapter();
-        binding.rvView.adapter =
-            adapterTest.withLoadStateHeader(header = LoadingAdapter())//userControl.adapter
+        adapterTest = PageAdapter()
+        adapterTest.setHasStableIds(true)
+        binding.rvView.adapter = adapterTest
+        //adapterTest.withLoadStateHeader(header = LoadingAdapter())//userControl.adapter
         homeViewModel.list.observe(viewLifecycleOwner) {
             homeViewModel.viewModelScope.launch {
+                adapterTest.submitList(it)
 
-                (binding.rvView.layoutManager as LinearLayoutManager)?.scrollToPositionWithOffset(
-                    lasty,
-                    lastx
-                )
+//                (binding.rvView.layoutManager as LinearLayoutManager)?.scrollToPositionWithOffset(
+//                    lasty,
+//                    lastx
+//                )
             }
 
         }
+        tracker = SelectionTracker.Builder<Long>(
+            "selection-1",
+            binding.rvView,
+            StableIdKeyProvider(binding.rvView),
+            SelectLoopUp(binding.rvView),
+            StorageStrategy.createLongStorage()
+        ).withSelectionPredicate(
+            SelectionPredicates.createSelectAnything()
+        ).build()
+        adapterTest.setTracker(tracker)
+        Log.d("guowtestflow", "start")
+        viewLifecycleOwner.lifecycleScope.launch {
+            flow<String> {
+                try {
+                    repeat(10) {
+                        Log.d("guowtestflow", "emit= $it")
+                        emit(it.toString())
+                    }
+                } catch (e:Exception) {
+                    Log.d("guowtestflow", "cancle")
+                }
+            }.buffer().take(2)//.distinctUntilChanged { old, new -> return@distinctUntilChanged old == new }
+                .collect {
+                    Log.d("guowtestflow", "emit collectLatest= $it")
+                    delay(5000)
+                }
+        }
+        Log.d("guowtestflow", "end")
+
 
 //        userControl.addLoadStateListener {
 //            it.refresh is LoadState.Loading
@@ -95,30 +144,45 @@ class HomeFragment : Fragment() {
 //        }
 
 
-        viewLifecycleOwner.lifecycleScope.launchWhenStarted {
-            try {
-                homeViewModel.fetchUsers {
-                    binding.sfRefresh.isRefreshing = false
-                }?.let {
-                    it.map { it -> it.map { it } }.collectLatest {
-                        it?.apply {
-                            adapterTest.submitData(this)
-                        }
+//        viewLifecycleOwner.lifecycleScope.launchWhenStarted {
+//            try {
+//                homeViewModel.fetchUsers {
+//                    binding.sfRefresh.isRefreshing = false
+//                }?.let {
+//                    it.map { it -> it.map { it } }.collectLatest {
+//                        it?.apply {
+//                         //   adapterTest.submitData(this)
+//                        }
+//
+//                    }
+//                }
+//            } catch (e: Throwable) {
+//                Log.d("guowtest", "throwable=" + e.toString())
+//            }
+//
+//
+//        }
+        var anytest = String()
+        anytest.apply {
+            this.length
+        }
+        anytest.also {
+            it.length
 
-                    }
-                }
-            } catch (e: Throwable) {
-                Log.d("guowtest", "throwable=" + e.toString())
-            }
+        }
+        anytest.let {
 
+        }
+        anytest.run {
+            this.length
 
         }
         var job = viewLifecycleOwner.lifecycleScope.launchWhenStarted {
-            adapterTest.loadStateFlow.collectLatest {
-//                Log.d("guowtest", "refresh=" + it.refresh)
-//                Log.d("guowtest", "append=" + it.append)
-//                Log.d("guowtest", "preend=" + it.prepend)
-            }
+//            adapterTest.loadStateFlow.collectLatest {
+////                Log.d("guowtest", "refresh=" + it.refresh)
+////                Log.d("guowtest", "append=" + it.append)
+////                Log.d("guowtest", "preend=" + it.prepend)
+//            }
         }
 
         var scop = CoroutineScope(Dispatchers.IO + SupervisorJob())
@@ -200,9 +264,6 @@ class HomeFragment : Fragment() {
 //                }
 
 
-
-
-
 //        adapter.addLoadStateListener {
 //            Log.d("guowtest", "1refresh=" + it.refresh)
 //            Log.d("guowtest", "1append=" + it.append)
@@ -210,7 +271,7 @@ class HomeFragment : Fragment() {
 //        }
         binding.sfRefresh.setOnRefreshListener {
             viewLifecycleOwner.lifecycleScope.launch {
-                adapterTest.refresh()
+                //  adapterTest.refresh()
                 binding.sfRefresh.isRefreshing = false
             }
 
@@ -236,6 +297,7 @@ class HomeFragment : Fragment() {
             }
 
         })
+
 
         var flowtest11 = flow<Int> {
             repeat(20) {
@@ -274,6 +336,87 @@ class HomeFragment : Fragment() {
 
             }
         }
+        var cannle = Channel<String>() {
+
+        }
+        viewLifecycleOwner.lifecycleScope.launch {
+            repeat(2) {
+                Log.d("testflow3", "channel produce ")
+                cannle.send("2")
+            }
+
+        }
+
+        viewLifecycleOwner.lifecycleScope.launch {
+            repeat(3) {
+                Log.d("testflow3", "channel produce")
+                cannle.send("3")
+            }
+
+        }
+        viewLifecycleOwner.lifecycleScope.launch {
+            repeat(5) {
+                Log.d("testflow3", "channel receive =" + cannle.receive())
+            }
+            cannle.receive()
+            Log.d("testflow3", "channel receive over")
+
+        }
+
+
+        var receiveChannel = viewLifecycleOwner.lifecycleScope.produce<Int> {
+            repeat(10) {
+                send(it)
+                Log.d("testflow", "channel produce $it")
+            }
+            Log.d("testflow", "channel produce over")
+
+        }
+
+
+//        viewLifecycleOwner.lifecycleScope.launch() {
+//            flow {
+//                emit(1)
+//            }.flowOn(Dispatchers.Main).map { it ->
+//                "String"
+//            }.flowOn(Dispatchers.IO).collect {
+//                withContext(Dispatchers.IO) {
+//                    repeat(10){
+//                        cannle.send("test"+"$it")
+//                    }
+//                    cannle.close()
+//                }
+//
+//
+//            }
+//        }
+        viewLifecycleOwner.lifecycleScope.launch {
+//            for(y in cannle) {
+//                Log.d("testflow", "channel name =" +y)
+//            }
+            receiveChannel.consumeEach {
+                delay(1000)
+                Log.d("testflow", "channel consumeEach=" + it)
+            }
+            Log.d("testflow", "channel over")
+//            repeat(10){
+//                Log.d("testflow", "channel name =" + cannle.receive())
+//            }
+        }
+
+        viewLifecycleOwner.lifecycleScope.launch {
+//            for(y in cannle) {
+//                Log.d("testflow", "channel name =" +y)
+//            }
+            receiveChannel.consumeEach {
+                delay(2000)
+                Log.d("testflow2", "channel consumeEach=" + it)
+            }
+            Log.d("testflow", "channel over")
+//            repeat(10){
+//                Log.d("testflow", "channel name =" + cannle.receive())
+//            }
+        }
 
 
         var testlivedata = liveData<Int> {
@@ -294,6 +437,7 @@ class HomeFragment : Fragment() {
             }
         }
 
+
         return root
     }
 
@@ -308,6 +452,11 @@ class HomeFragment : Fragment() {
 
         @JvmStatic
         var lasty = 0
+
+        val inttest by lazy {
+            2
+        }
+
     }
 
 

@@ -28,9 +28,10 @@ class MainActivity : AppCompatActivity() {
         //Log.d("guowtest", "main url=" + url.hashCode())
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
         val navView: BottomNavigationView = binding.navView
 
+        supportActionBar?.title = "123"
+        supportActionBar?.height
         //  val navController = findNavController(R.id.nav_host_fragment_activity_main)
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
@@ -45,7 +46,7 @@ class MainActivity : AppCompatActivity() {
 //
 //        navView.setupWithNavController(navController)
         binding.vpView.adapter = ViewPagerAdapter(this)
-        binding.vpView.offscreenPageLimit = 3
+        binding.vpView.offscreenPageLimit = 1
         navView.setOnNavigationItemSelectedListener {
             Log.d("guowtest", "menutime=" + it.itemId)
             when (it.itemId) {

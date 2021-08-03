@@ -9,7 +9,7 @@ import javax.inject.Inject
 /**
  * Created by admin on 2021/7/10.
  */
-class ApiHelperImpl @Inject constructor(private val apiService: ApiService) : ApiHelper {
-    override suspend fun getUsers(): Response<List<User>> = apiService.getUsers()
-
-}
+//class ApiHelperImpl @Inject constructor(private val apiService: ApiService) : ApiHelper {
+//    override suspend fun getUsers(): Response<List<User>> = apiService.getUsers()
+//
+//}

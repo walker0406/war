@@ -22,6 +22,7 @@ import android.widget.TextView
 import androidx.core.text.HtmlCompat
 import androidx.core.text.HtmlCompat.FROM_HTML_MODE_COMPACT
 import androidx.databinding.BindingAdapter
+import coil.load
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -29,10 +30,11 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton
 @BindingAdapter("imageFromUrl")
 fun bindImageFromUrl(view: ImageView, imageUrl: String?) {
     if (!imageUrl.isNullOrEmpty()) {
-        Glide.with(view.context)
-            .load(imageUrl)
-            .transition(DrawableTransitionOptions.withCrossFade())
-            .into(view)
+//        Glide.with(view.context)
+//            .load(imageUrl)
+//            .transition(DrawableTransitionOptions.withCrossFade())
+//            .into(view)
+        view.load(imageUrl)
     }
 }
 

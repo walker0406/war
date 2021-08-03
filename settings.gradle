@@ -1,2 +1,4 @@
 rootProject.name = "War"
 include ':app'
+include ':modul1'
+include ':base'

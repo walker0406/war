@@ -3,35 +3,37 @@ package com.walker.war.ui.home
 import android.util.Log
 import androidx.lifecycle.*
 import androidx.paging.*
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.walker.war.Test
+import com.walker.war.base.AppApiService
 import com.walker.war.data.MainRepository
-import com.walker.war.data.api.ApiHelper
 import com.walker.war.data.api.ApiService
 import com.walker.war.data.model.User
+import com.walker.war.di.module.TestAny
 import com.walker.war.eproxy.UserPagingSource
-import com.walker.war.newwork.NetworkHelper
-import com.walker.war.newwork.RequestResult
-import com.walker.war.newwork.RequestResult.*
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.*
-import okhttp3.internal.wait
 import java.lang.Exception
 import javax.inject.Inject
 
 @HiltViewModel
 class HomeViewModel @Inject constructor(
     private val mainRepository: MainRepository,
+    var test111: ApiService,
+    val ayn: TestAny,
+    val appApiService: AppApiService
 ) : ViewModel() {
     var userid: Lazy<String> = lazy {
         "123"
     }
     var list = MutableLiveData<List<User>>()
 
+
     init {
         viewModelScope.launch {
             list.value = fetchUsers()!!
+
+
         }
     }
 
@@ -58,7 +60,10 @@ class HomeViewModel @Inject constructor(
         Log.d("fetuser=", "userid =" + userid.value)
         var list = emptyList<User>()
         try {
-            var respond = mainRepository.getUsers()
+            for (i in 0..10) {
+                Log.d("fetuser=", "exception $i"+AppApiService.create())
+            }
+            var respond = appApiService.getUsers()//ayn.getUser()//mainRepository.getUsers()
             list = respond?.body()!!
         } catch (e: Exception) {
             Log.d("fetuser=", "exception =$e")
@@ -82,6 +87,7 @@ class HomeViewModel @Inject constructor(
 
     fun fetchUsers(action: () -> Unit): Flow<PagingData<User>> {
         action.invoke()
+
         return mainRepository.getData("")
 //        job?.cancel()
 //        job?.invokeOnCompletion {

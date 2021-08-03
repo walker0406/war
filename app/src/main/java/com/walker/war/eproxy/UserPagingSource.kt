@@ -20,6 +20,7 @@ import android.util.Log
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
 import com.walker.war.data.api.ApiHelper
+import com.walker.war.data.api.ApiService
 import com.walker.war.data.model.User
 import kotlinx.coroutines.delay
 import javax.inject.Inject
@@ -27,7 +28,7 @@ import javax.inject.Inject
 private const val UNSPLASH_STARTING_PAGE_INDEX = 1
 
 class UserPagingSource @Inject constructor(
-    private val service: ApiHelper,
+    private val service: ApiService,
 ) : PagingSource<Int, User>() {
 
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, User> {

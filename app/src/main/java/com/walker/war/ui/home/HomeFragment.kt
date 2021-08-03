@@ -8,28 +8,19 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.*
-import androidx.paging.*
 import androidx.recyclerview.selection.*
-import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.OnScrollListener
 import com.walker.war.SelectLoopUp
-import com.walker.war.adapter.LoadingAdapter
 import com.walker.war.adapter.PageAdapter
-import com.walker.war.data.api.ApiHelper
-import com.walker.war.data.model.User
 import com.walker.war.databinding.FragmentHomeBinding
 import com.walker.war.di.module.EntryPointTest
-import com.walker.war.eproxy.PageSourceTest
-import com.walker.war.eproxy.UserControl
 import com.walker.war.eproxy.UserControlPage
-import com.walker.war.eproxy.UserPagingSource
 import com.walker.war.newwork.NetworkHelper
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.*
 import kotlinx.coroutines.channels.*
 import kotlinx.coroutines.flow.*
-import okhttp3.internal.threadName
 import java.lang.Exception
 import javax.inject.Inject
 import kotlin.coroutines.resume
@@ -50,8 +41,8 @@ class HomeFragment : Fragment() {
     @Inject
     lateinit var networkHelper: NetworkHelper
 
-    @Inject
-    lateinit var userSource: ApiHelper
+//    @Inject
+//    lateinit var userSource: ApiHelper
 
     lateinit var adapterTest: PageAdapter
 
@@ -106,16 +97,16 @@ class HomeFragment : Fragment() {
             }
 
         }
-        tracker = SelectionTracker.Builder<Long>(
-            "selection-1",
-            binding.rvView,
-            StableIdKeyProvider(binding.rvView),
-            SelectLoopUp(binding.rvView),
-            StorageStrategy.createLongStorage()
-        ).withSelectionPredicate(
-            SelectionPredicates.createSelectAnything()
-        ).build()
-        adapterTest.setTracker(tracker)
+//        tracker = SelectionTracker.Builder<Long>(
+//            "selection-1",
+//            binding.rvView,
+//            StableIdKeyProvider(binding.rvView),
+//            SelectLoopUp(binding.rvView),
+//            StorageStrategy.createLongStorage()
+//        ).withSelectionPredicate(
+//            SelectionPredicates.createSelectAnything()
+//        ).build()
+//        adapterTest.setTracker(tracker)
         Log.d("guowtestflow", "start")
         viewLifecycleOwner.lifecycleScope.launch {
             flow<String> {
@@ -124,10 +115,11 @@ class HomeFragment : Fragment() {
                         Log.d("guowtestflow", "emit= $it")
                         emit(it.toString())
                     }
-                } catch (e:Exception) {
+                } catch (e: Exception) {
                     Log.d("guowtestflow", "cancle")
                 }
-            }.buffer().take(2)//.distinctUntilChanged { old, new -> return@distinctUntilChanged old == new }
+            }.buffer()
+                .take(2)//.distinctUntilChanged { old, new -> return@distinctUntilChanged old == new }
                 .collect {
                     Log.d("guowtestflow", "emit collectLatest= $it")
                     delay(5000)
@@ -162,28 +154,6 @@ class HomeFragment : Fragment() {
 //
 //
 //        }
-        var anytest = String()
-        anytest.apply {
-            this.length
-        }
-        anytest.also {
-            it.length
-
-        }
-        anytest.let {
-
-        }
-        anytest.run {
-            this.length
-
-        }
-        var job = viewLifecycleOwner.lifecycleScope.launchWhenStarted {
-//            adapterTest.loadStateFlow.collectLatest {
-////                Log.d("guowtest", "refresh=" + it.refresh)
-////                Log.d("guowtest", "append=" + it.append)
-////                Log.d("guowtest", "preend=" + it.prepend)
-//            }
-        }
 
         var scop = CoroutineScope(Dispatchers.IO + SupervisorJob())
         scop.launch {
@@ -210,65 +180,47 @@ class HomeFragment : Fragment() {
 
 
         var handler = CoroutineExceptionHandler { _, throwable ->
-            {
-                Log.d("guowtest", "exception")
+            run {
+                Log.d("guowtestexception", "test1 exception")
             }
         }
-        val scopetest = CoroutineScope(Job())
-        var jobadf = scopetest.launch {
-            Log.d("guowtest", "test1")
-            try {
-                throw  Throwable()
-            } catch (e: Throwable) {
-                Log.d("guowtest", "exception")
-            }
-        }
-        jobadf.cancel()
-
-        scopetest.launch {
-            Log.d("guowtest", "test2")
-            try {
-                delay(5000)
-                Log.d("guowtest", "test2")
-            } catch (e: Throwable) {
-                Log.d("guowtest", "exception")
-            }
-        }
-//        scopetest.launch {
-//            async {
-//
-//                Log.d("guowtest", "test1")
-//                try {
-//                    throw  Throwable()
-//                } catch (e: Throwable) {
-//                    Log.d("guowtest", "exception")
-//                }
-//            }
-//
-//            delay(3000)
-//            launch {
-//                Log.d("guowtest", "test2")
-//            }
-
-
-//                try {
-//                    coroutineScope {
-//                        try {
-//                            tast2.start()
-//                            delay(5000)
-//                            tast1.start()
-//                        } catch (e: Throwable) {
-//                        }
+        val scopeTest = CoroutineScope(SupervisorJob())
+//        try {
+//            scopeTest.launch(handler) {
+//                launch() {
+//                    try {
+//                        delay(Long.MAX_VALUE)
+//                    } finally {
+//                        Log.d("guowtestexception", "exception21112")
 //                    }
-//                } catch (e: Throwable) {
+//
 //                }
-
-
-//        adapter.addLoadStateListener {
-//            Log.d("guowtest", "1refresh=" + it.refresh)
-//            Log.d("guowtest", "1append=" + it.append)
-//            Log.d("guowtest", "1preend=" + it.prepend)
+//                launch(Job()) {
+//                    throw  Throwable()
+//                }
+//
+//            }
+//        } catch (e: Throwable) {
+//            Log.d("guowtestexception", "scopeTest=$e")
+//
 //        }
+      //  scopeTest.launch {
+        var jobtest = Job()
+            scopeTest.launch(jobtest) {
+                try {
+                    delay(Long.MAX_VALUE)
+                } finally {
+                    Log.d("guowtestexception", "exception21112")
+                }
+
+            }
+            scopeTest.launch(jobtest) {
+                // throw  Throwable()
+                Log.d("guowtestexception", "test cancle")
+            }
+       // }
+
+
         binding.sfRefresh.setOnRefreshListener {
             viewLifecycleOwner.lifecycleScope.launch {
                 //  adapterTest.refresh()
@@ -276,13 +228,7 @@ class HomeFragment : Fragment() {
             }
 
         }
-        (homeViewModel.testNoValue as LiveData<*>).observe(viewLifecycleOwner) {
-            Log.d("guowtest", "onchange===" + it)
-        }
 
-        var flowtest = flow {
-            emit(1)
-        }
         val array = arrayOf<String>("1", "2", "")
         binding.rvView.addOnScrollListener(object : OnScrollListener() {
             override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {

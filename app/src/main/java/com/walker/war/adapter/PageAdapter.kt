@@ -17,6 +17,7 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.DiffUtil.ItemCallback
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.sankuai.waimai.router.Router
 import com.walker.war.R
 import com.walker.war.data.model.User
 import com.walker.war.databinding.ItemLayoutBinding
@@ -53,15 +54,19 @@ class PageAdapter :
         user?.apply {
             holder.bind(user)
         }
-
-        if (tracker!!.isSelected(user.id.toLong())) {
-            holder.itemView.isActivated = true
-            holder.binding.root.background = ColorDrawable(Color.parseColor("#80deea"))
-        } else {
-            // Reset color to white if not selected
-            holder.binding.root.background = ColorDrawable(Color.WHITE)
-            holder.itemView.isActivated = true
+        holder.binding.onClick = View.OnClickListener {
+            Router.startUri(holder.binding.root.context, "/account")
         }
+
+
+//        if (tracker!!.isSelected(user.id.toLong())) {
+//            holder.itemView.isActivated = true
+//            holder.binding.root.background = ColorDrawable(Color.parseColor("#80deea"))
+//        } else {
+//            // Reset color to white if not selected
+//            holder.binding.root.background = ColorDrawable(Color.WHITE)
+//            holder.itemView.isActivated = true
+//        }
     }
 
     override fun getItemId(position: Int): Long {

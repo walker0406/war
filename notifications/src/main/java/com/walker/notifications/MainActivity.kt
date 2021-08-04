@@ -10,10 +10,13 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Preview
 import com.sankuai.waimai.router.annotation.RouterUri
 import com.walker.modul1.ui.theme.WarTheme
+import timber.log.Timber
+
 @RouterUri(path = ["/account"])
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        Timber.d("intent value=" + intent.getIntExtra("test", 8))
         setContent {
             WarTheme {
                 // A surface container using the 'background' color from the theme

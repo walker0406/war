@@ -2,12 +2,12 @@ plugins {
     id 'com.android.library'
     id 'kotlin-android'
     id 'kotlin-kapt'
+    id 'dagger.hilt.android.plugin'
 }
 
 
 android {
     compileSdkVersion 30
-
     defaultConfig {
         minSdkVersion 22
         targetSdkVersion 30
@@ -32,8 +32,11 @@ android {
     kotlinOptions {
         jvmTarget = '1.8'
         useIR = true
+        kapt.includeCompileClasspath = false
     }
     buildFeatures {
+        dataBinding true
+        viewBinding true
         compose true
     }
     composeOptions {
@@ -46,6 +49,22 @@ android {
             excludes += '/META-INF/{AL2.0,LGPL2.1}'
         }
     }
+
+    //p 工程
+    sourceSets {
+        main {
+            def dirs = ['p_widget', 'p_theme',
+                        'p_shop', 'p_shopcart',
+                        'p_submit_order', 'p_multperson', 'p_again_order',
+                        'p_location', 'p_log', 'p_ugc', 'p_im', 'p_share']
+            dirs.each { dir ->
+                java.srcDir("src/$dir/java")
+                res.srcDir("src/$dir/res")
+            }
+        }
+    }
+
+
 }
 
 dependencies {
@@ -68,5 +87,17 @@ dependencies {
     kapt "com.airbnb.android:epoxy-processor:+"
     kapt "com.github.bumptech.glide:compiler:+"
     kapt 'com.google.dagger:hilt-compiler:2.37'
+    api 'com.google.dagger:hilt-android:2.37'
 
+}
+
+
+//构建一个任务 makeJacaDir，刷新一下就可以在gradle的Tasks的other看到这个任务
+task makeJavaDir(){
+//    def dirs = ['p_widget', 'p_theme',
+//                'p_shop', 'p_shopcart']
+//    dirs.each { dir ->
+//        java.srcDir("src/$dir/java")
+//        res.srcDir("src/$dir/res")
+//    }
 }

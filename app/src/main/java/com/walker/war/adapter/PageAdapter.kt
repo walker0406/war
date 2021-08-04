@@ -18,6 +18,7 @@ import androidx.recyclerview.widget.DiffUtil.ItemCallback
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.sankuai.waimai.router.Router
+import com.sankuai.waimai.router.common.DefaultUriRequest
 import com.walker.war.R
 import com.walker.war.data.model.User
 import com.walker.war.databinding.ItemLayoutBinding
@@ -55,7 +56,8 @@ class PageAdapter :
             holder.bind(user)
         }
         holder.binding.onClick = View.OnClickListener {
-            Router.startUri(holder.binding.root.context, "/account")
+           // Router.startUri(holder.binding.root.context, "/account")
+            DefaultUriRequest(holder.binding.root.context, "/account").putExtra("test",1).start()
         }
 
 

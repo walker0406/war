@@ -16,13 +16,14 @@
 
 package com.walker.war.adapter
 
-import androidx.activity.ComponentActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import com.walker.war.ui.dashboard.DashboardFragment
 import com.walker.war.ui.home.HomeFragment
 import com.walker.war.ui.notifications.NotificationsFragment
+import com.sankuai.waimai.router.Router
+
 
 const val HOME_PAGE_INDEX = 0
 const val DASH_PAGE_INDEX = 1
@@ -42,6 +43,12 @@ class ViewPagerAdapter(fragment: FragmentActivity) : FragmentStateAdapter(fragme
     override fun getItemCount() = tabFragmentsCreators.size
 
     override fun createFragment(position: Int): Fragment {
+        if (position == 2) {
+            return Router.getService(
+                Fragment::class.java,
+                "NotificationsFragment"
+            )
+        }
         return tabFragmentsCreators[position]?.invoke() ?: throw IndexOutOfBoundsException()
     }
 }

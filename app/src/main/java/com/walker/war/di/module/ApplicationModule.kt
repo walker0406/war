@@ -1,9 +1,7 @@
 package com.walker.war.di.module
 
-import android.util.Log
 import com.walker.war.BuildConfig
 import com.walker.war.base.AppApiService
-import com.walker.war.data.api.ApiHelper
 import com.walker.war.data.api.ApiService
 import com.walker.war.di.qualifier.Test2
 import dagger.Module

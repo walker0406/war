@@ -68,8 +68,6 @@ class HomeViewModel @Inject constructor(
         } catch (e: Exception) {
             Log.d("fetuser=", "exception =$e")
         }
-        var test1 = Test()
-        var test2 = Test()
         Log.d("fetuser=", "Test.test1=${Test.test1}")
         Log.d("fetuser=", "Test.test2=${Test.test1}")
 //            var result = Loading("123") as RequestResult<String>

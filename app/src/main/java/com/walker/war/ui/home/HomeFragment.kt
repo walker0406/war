@@ -21,6 +21,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.*
 import kotlinx.coroutines.channels.*
 import kotlinx.coroutines.flow.*
+import timber.log.Timber
 import java.lang.Exception
 import javax.inject.Inject
 import kotlin.coroutines.resume
@@ -62,23 +63,15 @@ class HomeFragment : Fragment() {
 
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
         val root: View = binding.root
+        binding.lifecycleOwner = viewLifecycleOwner
+        binding.viewModel = homeViewModel
 
         val textView: TextView = binding.textHome
-        homeViewModel.text.observe(viewLifecycleOwner, Observer {
-            textView.text = it
-        })
+//        homeViewModel.text.observe(viewLifecycleOwner, Observer {
+//            textView.text = it
+//        })
         // binding.rvView.adapter = MainAdapter()
         var userControl = UserControlPage()
-
-
-
-
-
-
-
-
-
-
 
 
         userControl.isDebugLoggingEnabled = true
@@ -107,7 +100,10 @@ class HomeFragment : Fragment() {
 //            SelectionPredicates.createSelectAnything()
 //        ).build()
 //        adapterTest.setTracker(tracker)
-        Log.d("guowtestflow", "start")
+        Timber.tag("LifeCycles");
+        Timber.d("Activity Created");
+
+        Timber.d("Activity Created 222");
         viewLifecycleOwner.lifecycleScope.launch {
             flow<String> {
                 try {
@@ -204,21 +200,21 @@ class HomeFragment : Fragment() {
 //            Log.d("guowtestexception", "scopeTest=$e")
 //
 //        }
-      //  scopeTest.launch {
+        //  scopeTest.launch {
         var jobtest = Job()
-            scopeTest.launch(jobtest) {
-                try {
-                    delay(Long.MAX_VALUE)
-                } finally {
-                    Log.d("guowtestexception", "exception21112")
-                }
+        scopeTest.launch(jobtest) {
+            try {
+                delay(Long.MAX_VALUE)
+            } finally {
+                Log.d("guowtestexception", "exception21112")
+            }
 
-            }
-            scopeTest.launch(jobtest) {
-                // throw  Throwable()
-                Log.d("guowtestexception", "test cancle")
-            }
-       // }
+        }
+        scopeTest.launch(jobtest) {
+            // throw  Throwable()
+            Log.d("guowtestexception", "test cancle")
+        }
+        // }
 
 
         binding.sfRefresh.setOnRefreshListener {

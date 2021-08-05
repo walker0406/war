@@ -31,6 +31,18 @@ android {
     kotlinOptions {
         jvmTarget = '1.8'
     }
+
+    //p 工程
+    sourceSets {
+        main {
+            def dirs = ['p_widget', 'p_theme']
+            dirs.each { dir ->
+                java.srcDir("src/$dir/java")
+                res.srcDir("src/$dir/res")
+            }
+        }
+
+    }
 }
 
 dependencies {

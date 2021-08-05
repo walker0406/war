@@ -50,6 +50,7 @@ class MainActivity : AppCompatActivity() {
 //        navView.setupWithNavController(navController)
         binding.vpView.adapter = ViewPagerAdapter(this)
         binding.vpView.offscreenPageLimit = 1
+        binding.vpView.isUserInputEnabled = false
         navView.setOnNavigationItemSelectedListener {
             Log.d("guowtest", "menutime=" + it.itemId)
             when (it.itemId) {

@@ -16,9 +16,7 @@ import com.walker.war.databinding.ItemLayoutBinding
  * Created by admin on 2021/7/10.
  */
 
-class MainAdapter(
-
-) : RecyclerView.Adapter<MainAdapter.DataViewHolder>() {
+class MainAdapter: RecyclerView.Adapter<MainAdapter.DataViewHolder>() {
     private val users: ArrayList<User> = ArrayList()
     fun updateData(data: ArrayList<User>?) {
         data?.let {

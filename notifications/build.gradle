@@ -53,15 +53,13 @@ android {
     //p 工程
     sourceSets {
         main {
-            def dirs = ['p_widget', 'p_theme',
-                        'p_shop', 'p_shopcart',
-                        'p_submit_order', 'p_multperson', 'p_again_order',
-                        'p_location', 'p_log', 'p_ugc', 'p_im', 'p_share']
+            def dirs = ['p_widget', 'p_theme']
             dirs.each { dir ->
                 java.srcDir("src/$dir/java")
-                res.srcDir("src/$dir/res")
+                //res.srcDir("src/$dir/res")
             }
         }
+
     }
 
 

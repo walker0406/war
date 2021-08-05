@@ -73,6 +73,7 @@ class PageAdapter :
             // Router.startUri(holder.binding.root.context, "/account")
             DefaultUriRequest(holder.binding.root.context, "/account").putExtra("test", 1).start()
         }
+        holder.binding.executePendingBindings()
         super.onBindViewHolder(holder, position)
 
 //        if (tracker!!.isSelected(user.id.toLong())) {

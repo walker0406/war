@@ -53,10 +53,13 @@ android {
     //p 工程
     sourceSets {
         main {
-            def dirs = ['p_widget', 'p_theme']
+            def dirs = ['p_a', 'p_b','p_base']
+            manifest.srcFile 'src/p_a/main/AndroidManifest.xml'
+            manifest.srcFile 'src/p_b/main/AndroidManifest.xml'
+            manifest.srcFile 'src/p_base/main/AndroidManifest.xml'
             dirs.each { dir ->
-                java.srcDir("src/$dir/java")
-                //res.srcDir("src/$dir/res")
+                java.srcDir("src/$dir/main/java")
+                res.srcDir("src/$dir/main/res")
             }
         }
 

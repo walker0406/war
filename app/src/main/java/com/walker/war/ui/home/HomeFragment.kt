@@ -26,9 +26,6 @@ import java.lang.Exception
 import javax.inject.Inject
 import kotlin.coroutines.resume
 
-val Float.dp
-    get() = 2
-
 @AndroidEntryPoint
 class HomeFragment : Fragment() {
 

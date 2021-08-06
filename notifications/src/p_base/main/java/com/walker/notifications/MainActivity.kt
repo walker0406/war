@@ -8,6 +8,7 @@ import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import com.sankuai.waimai.router.annotation.RouterUri
 import com.walker.modul1.ui.theme.WarTheme
 import timber.log.Timber
@@ -30,7 +31,8 @@ class MainActivity : ComponentActivity() {
 
 @Composable
 fun Greeting(name: String) {
-    Text(text = "Hello $name!")
+    Text(text = "Hello $name!" )
+    2.dp
 }
 
 @Preview(showBackground = true)

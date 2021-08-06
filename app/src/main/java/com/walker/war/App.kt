@@ -2,6 +2,8 @@ package com.walker.war
 
 import android.app.Application
 import android.util.Log
+import com.qmuiteam.qmui.arch.QMUISwipeBackActivityManager
+import com.qmuiteam.qmui.util.QMUIStatusBarHelper
 import com.sankuai.waimai.router.BuildConfig
 import com.sankuai.waimai.router.Router
 import com.sankuai.waimai.router.common.DefaultRootUriHandler
@@ -33,7 +35,7 @@ class App : Application() {
         Debugger.setEnableLog(com.walker.war.BuildConfig.DEBUG);
         // 调试开关，建议测试环境下开启。调试模式下，严重问题直接抛异常，及时暴漏出来。
         Debugger.setEnableDebug(com.walker.war.BuildConfig.DEBUG);
-
+        QMUISwipeBackActivityManager.init(this)
     }
 
     class CrashReportingTree : Timber.Tree() {

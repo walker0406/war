@@ -1,5 +1,6 @@
 package com.walker.war
 
+import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
 import com.google.android.material.bottomnavigation.BottomNavigationView
@@ -17,13 +18,25 @@ import com.qmuiteam.qmui.util.QMUIStatusBarHelper
 import com.walker.war.adapter.ViewPagerAdapter
 import com.walker.war.databinding.ActivityMainBinding
 import com.walker.war.di.qualifier.Test2
+import com.zackratos.ultimatebarx.ultimatebarx.UltimateBarX
+import com.zackratos.ultimatebarx.ultimatebarx.bean.BarBackground
+import com.zackratos.ultimatebarx.ultimatebarx.bean.BarConfig
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 import kotlin.concurrent.fixedRateTimer
 
 @AndroidEntryPoint
 class MainActivity : QMUIFragmentActivity() {
+    val background = BarBackground.newInstance()    // 创建 background 对象
+        .color(Color.TRANSPARENT)                   // 状态栏/导航栏背景颜色（色值）
+        .colorRes(R.color.purple_700)              // 状态栏/导航栏背景颜色（资源id）
+       // .drawableRes(R.drawable.bg_common)          // 状态栏/导航栏背景 drawable
+    // 设置背景的方法三选一即可
 
+    val config = BarConfig.newInstance()            // 创建配置对象
+        .fitWindow(false)                            // 布局是否侵入状态栏（true 不侵入，false 侵入）
+        .background(background)                     // 设置 background 对象
+        .light(false)
 
     private lateinit var binding: ActivityMainBinding
 
@@ -32,6 +45,14 @@ class MainActivity : QMUIFragmentActivity() {
         //Log.d("guowtest", "main url=" + url.hashCode())
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        binding.root.fitsSystemWindows =true
+                                 // light模式
+        // 状态栏字体 true: 灰色，false: 白色 Android 6.0+
+        // 导航栏按钮 true: 灰色，false: 白色 Android 8.0+
+
+        UltimateBarX.with(this)                         // 对当前 Activity 或 Fragment 生效
+            .config(config)                             // 使用配置
+            .applyStatusBar()
         val navView: BottomNavigationView = binding.navView
         supportActionBar?.title = "123"
         supportActionBar?.height

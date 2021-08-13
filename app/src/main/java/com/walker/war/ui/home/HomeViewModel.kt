@@ -3,6 +3,7 @@ package com.walker.war.ui.home
 import android.util.Log
 import androidx.lifecycle.*
 import androidx.paging.*
+import com.walker.net.HttpResult
 import com.walker.war.Test
 import com.walker.war.base.AppApiService
 import com.walker.war.data.MainRepository
@@ -10,9 +11,11 @@ import com.walker.war.data.api.ApiService
 import com.walker.war.data.model.User
 import com.walker.war.di.module.TestAny
 import com.walker.war.eproxy.UserPagingSource
+import com.walker.war.repository.XXXRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.*
+import timber.log.Timber
 import java.lang.Exception
 import javax.inject.Inject
 
@@ -28,11 +31,14 @@ class HomeViewModel @Inject constructor(
     }
     var list = MutableLiveData<List<User>>()
 
+    var list2 = MutableLiveData<HttpResult<List<User>>>()
+
 
     init {
         viewModelScope.launch {
             list.value = fetchUsers()!!
-
+            list2.value = XXXRepository.getUser()//fetchUsers()!!
+            Timber.d(list2.value.toString())
 
         }
     }
@@ -65,6 +71,16 @@ class HomeViewModel @Inject constructor(
             }
             var respond = appApiService.getUsers()//ayn.getUser()//mainRepository.getUsers()
             list = respond?.body()!!
+
+
+            XXXRepository.getUser()
+
+
+
+
+
+
+
         } catch (e: Exception) {
             Log.d("fetuser=", "exception =$e")
         }

@@ -1,7 +1,9 @@
 package com.walker.war.ui.home
 
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
+import android.util.Log.d
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -21,13 +23,16 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.*
 import kotlinx.coroutines.channels.*
 import kotlinx.coroutines.flow.*
+import me.jessyan.autosize.utils.AutoSizeLog.d
 import timber.log.Timber
 import java.lang.Exception
+import java.util.*
 import javax.inject.Inject
+import kotlin.collections.ArrayList
 import kotlin.coroutines.resume
 
 @AndroidEntryPoint
-class HomeFragment : Fragment() {
+open class HomeFragment : Fragment() {
 
     private lateinit var homeViewModel: HomeViewModel
     private var _binding: FragmentHomeBinding? = null
@@ -57,11 +62,38 @@ class HomeFragment : Fragment() {
         // Log.d("guowtest", "test url=" + test.url.hashCode())
         homeViewModel =
             ViewModelProvider(this).get(HomeViewModel::class.java)
-
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
         val root: View = binding.root
         binding.lifecycleOwner = viewLifecycleOwner
         binding.viewModel = homeViewModel
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            val primaryLocale: Locale? = context?.resources?.configuration?.locales?.get(0)
+            val locale: String? = primaryLocale?.toLanguageTag()
+            Timber.d(Locale.getDefault().displayLanguage)
+            Timber.d(Locale.getDefault().displayName)
+            Timber.d(locale)
+        } else {
+            val primaryLocale: Locale? = context?.resources?.configuration?.locale
+            val locale: String? = primaryLocale?.toLanguageTag()
+        }
+
+
+
+        //?super down  in HomeFragment PECS
+        //?extends up
+        val superList: ArrayList<in HomeFragment?> = ArrayList(4)
+        val extendsList: ArrayList<out HomeFragment?> = ArrayList(4)
+        //list3.add(Fragment())
+//        父类泛型对象可以赋值给子类泛型对象，用 in；
+//        子类泛型对象可以赋值给父类泛型对象，用 out。
+        superList.add(HomeFragment())
+        superList.add(HomeFragmenttest())
+        Timber.d(superList.toString()?:2.toString())
+        //list2.add(HomeFragment())
+
+        superList[0]
+        superList[0]
+        Timber.d("===" + superList.size.toString())
 
         val textView: TextView = binding.textHome
 //        homeViewModel.text.observe(viewLifecycleOwner, Observer {
@@ -171,7 +203,8 @@ class HomeFragment : Fragment() {
 
         }
 
-
+        Timber.tag("walker")
+        Timber.d("HomeFragment=="+(this is Fragment))
         var handler = CoroutineExceptionHandler { _, throwable ->
             run {
                 Log.d("guowtestexception", "test1 exception")
@@ -280,15 +313,15 @@ class HomeFragment : Fragment() {
         }
         viewLifecycleOwner.lifecycleScope.launch {
             repeat(2) {
-                Log.d("testflow3", "channel produce ")
                 cannle.send("2")
             }
+            //in super out extends
+            // list3.add(Wangxiaoer())
 
         }
 
         viewLifecycleOwner.lifecycleScope.launch {
             repeat(3) {
-                Log.d("testflow3", "channel produce")
                 cannle.send("3")
             }
 

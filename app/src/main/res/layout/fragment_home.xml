@@ -18,8 +18,7 @@
             android:id="@+id/sf_refresh"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginTop="?attr/qmui_topbar_height"
-            android:fitsSystemWindows="true">
+            android:layout_marginTop="?attr/qmui_topbar_height">
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
@@ -53,7 +52,6 @@
         <com.qmuiteam.qmui.widget.QMUITopBarLayout
             android:id="@+id/topbar"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:fitsSystemWindows="true" />
+            android:layout_height="wrap_content" />
     </com.qmuiteam.qmui.widget.QMUIWindowInsetLayout>
 </layout>

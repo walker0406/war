@@ -16,6 +16,8 @@ android {
         versionCode 1
         versionName "1.0"
 
+        buildConfigField 'String', 'BASE_URL', "\"https://www.fastmock.site/mock/e745121f525f2c1b322f58e300086831/walker/api/\""
+
     }
 
     buildTypes {
@@ -125,4 +127,15 @@ dependencies {
     def qmui_arch_version = '2.0.0-alpha10'
     api "com.qmuiteam:arch:$qmui_arch_version"
     kapt "com.qmuiteam:arch-compiler:$qmui_arch_version" // use annotationProcessor if java
+
+    //status bar
+    api 'com.zackratos.ultimatebarx:ultimatebarx:0.6.0'
+
+    def room_version = '2.3.0'
+    kapt("androidx.room:room-compiler:$room_version")
+    api("androidx.room:room-ktx:$room_version")
+
+
+    api 'com.google.android.exoplayer:exoplayer:2.14.2'
+
 }

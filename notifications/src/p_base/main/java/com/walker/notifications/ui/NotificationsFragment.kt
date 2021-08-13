@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.sankuai.waimai.router.annotation.RouterService
 import com.walker.modul1.databinding.FragmentNotificationsBinding
@@ -18,6 +19,7 @@ import timber.log.Timber
 fun basetest() {
 
 }
+
 @AndroidEntryPoint
 @RouterService(interfaces = [Fragment::class], key = ["NotificationsFragment"])
 class NotificationsFragment : Fragment() {
@@ -33,7 +35,12 @@ class NotificationsFragment : Fragment() {
     ): View? {
         Timber.d("notification url= p_a")
         notificationsViewModel =
-            ViewModelProvider(this).get(NotificationsViewModel::class.java)
+            ViewModelProvider(this, object : ViewModelProvider.Factory {
+                override fun <T : ViewModel?> create(modelClass: Class<T>): T {
+                    return NotificationsViewModel(1) as T
+                }
+
+            }).get(NotificationsViewModel::class.java)
 
         _binding = FragmentNotificationsBinding.inflate(inflater, container, false)
         val root: View = binding.root

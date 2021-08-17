@@ -37,7 +37,6 @@ class HomeViewModel @Inject constructor(
     init {
         viewModelScope.launch {
             list.value = fetchUsers()!!
-            list2.value = XXXRepository.getUser()//fetchUsers()!!
             Timber.d(list2.value.toString())
 
         }
@@ -71,15 +70,6 @@ class HomeViewModel @Inject constructor(
             }
             var respond = appApiService.getUsers()//ayn.getUser()//mainRepository.getUsers()
             list = respond?.body()!!
-
-
-            XXXRepository.getUser()
-
-
-
-
-
-
 
         } catch (e: Exception) {
             Log.d("fetuser=", "exception =$e")

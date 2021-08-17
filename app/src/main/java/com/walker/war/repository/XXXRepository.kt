@@ -3,10 +3,9 @@ package com.walker.war.repository
 import com.walker.base.BuildConfig
 import com.walker.net.HttpClient
 import com.walker.net.HttpResult
+import com.walker.net.api.ApiService
 import com.walker.net.repository.BaseRepository
 import com.walker.net.respond.XXXResponse
-import com.walker.war.data.api.ApiService
-import com.walker.war.data.model.User
 
 /**
  * Created by admin on 2021/8/13.
@@ -24,7 +23,7 @@ object XXXRepository : BaseRepository() {
     }
 
 
-    suspend fun getUser(): HttpResult<List<User>> {
-        return call { service.getUsersBase() }
-    }
+//    suspend fun getHomeFeed(cityId: Int): HttpResult<HomeFeedData> {
+//        return call { service.getHomeFeed(cityId) }
+//    }
 }

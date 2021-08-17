@@ -16,5 +16,5 @@ interface ApiService {
 
 
     @GET("user")
-    suspend fun getUsersBase(): XXXListResponse<List<User>>
+    suspend fun getUsersBase(): XXXListResponse<User>
 }

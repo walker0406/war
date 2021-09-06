@@ -76,6 +76,8 @@ class PageAdapter :
         holder.binding.executePendingBindings()
         super.onBindViewHolder(holder, position)
 
+
+
 //        if (tracker!!.isSelected(user.id.toLong())) {
 //            holder.itemView.isActivated = true
 //            holder.binding.root.background = ColorDrawable(Color.parseColor("#80deea"))
@@ -152,4 +154,6 @@ class PageAdapter :
     fun setTracker(tracker: SelectionTracker<Long>?) {
         this.tracker = tracker
     }
+
+
 }

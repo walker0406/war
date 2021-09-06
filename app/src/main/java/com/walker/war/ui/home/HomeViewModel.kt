@@ -16,6 +16,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.*
 import timber.log.Timber
+import java.io.IOException
 import java.lang.Exception
 import javax.inject.Inject
 
@@ -33,12 +34,26 @@ class HomeViewModel @Inject constructor(
 
     var list2 = MutableLiveData<HttpResult<List<User>>>()
 
+    var b:User = User()
+
 
     init {
         viewModelScope.launch {
-            list.value = fetchUsers()!!
+            try {
+                list.value = fetchUsers()!!
+            } catch (e:IOException){
+
+            }
+
             Timber.d(list2.value.toString())
 
+        }
+        b?.also {
+            Timber.d("123="+(Any::class.java.isAssignableFrom(b::class.java)))
+            Timber.d("123s="+(b is User))
+        }
+        b?.let {
+            Timber.d("let b is null")
         }
     }
 
@@ -57,6 +72,7 @@ class HomeViewModel @Inject constructor(
 
     val testStateFlow = MutableStateFlow<String>("1")
     val testShareFlow = MutableSharedFlow<String>()
+    val _test:StateFlow<String> =testStateFlow
 
 
     //
@@ -64,9 +80,10 @@ class HomeViewModel @Inject constructor(
         //  _users.postValue(Resource.loading(null))
         Log.d("fetuser=", "userid =" + userid.value)
         var list = emptyList<User>()
+        _test.value
         try {
             for (i in 0..10) {
-                Log.d("fetuser=", "exception $i"+AppApiService.create())
+                Log.d("fetuser=", "exception $i" + AppApiService.create())
             }
             var respond = appApiService.getUsers()//ayn.getUser()//mainRepository.getUsers()
             list = respond?.body()!!
@@ -82,7 +99,6 @@ class HomeViewModel @Inject constructor(
 //                is Loading -> TODO()
 //                is Success -> TODO()
 //            }
-        Log.d("fetuser=", "=" + Thread.currentThread().name)
         return list
     }
 

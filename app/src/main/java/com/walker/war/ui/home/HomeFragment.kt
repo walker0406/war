@@ -10,6 +10,7 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.*
+import androidx.lifecycle.Observer
 import androidx.recyclerview.selection.*
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.OnScrollListener
@@ -76,8 +77,10 @@ open class HomeFragment : Fragment() {
             val primaryLocale: Locale? = context?.resources?.configuration?.locale
             val locale: String? = primaryLocale?.toLanguageTag()
         }
-
-
+       // homeViewModel.listtest.value = null
+        homeViewModel.listtest.observe(viewLifecycleOwner, Observer {
+            Timber.d("just observe="+it)
+        })
 
         //?super down  in HomeFragment PECS
         //?extends up

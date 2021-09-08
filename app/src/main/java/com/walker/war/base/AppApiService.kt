@@ -19,6 +19,10 @@ interface AppApiService {
     companion object {
         private const val BASE_URL = BuildConfig.BASE_URL
 
+        val apiService by lazy {
+            create()
+        }
+
         fun create(): AppApiService {
             val logger =
                 HttpLoggingInterceptor().apply { level = HttpLoggingInterceptor.Level.BASIC }

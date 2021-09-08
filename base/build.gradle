@@ -139,4 +139,15 @@ dependencies {
 
     api 'com.google.android.exoplayer:exoplayer:2.14.2'
 
+    api 'com.firebaseui:firebase-ui-auth:7.2.0'
+
+    // Import the Firebase BoM
+    api platform('com.google.firebase:firebase-bom:28.4.0')
+
+    api 'com.google.firebase:firebase-auth'
+    // Add the dependency for the Firebase SDK for Google Analytics
+    // When using the BoM, don't specify versions in Firebase dependencies
+    api 'com.google.firebase:firebase-analytics'
+
+
 }

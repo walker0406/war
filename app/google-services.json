@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "306667188077",
+    "firebase_url": "https://kongfu-d4643.firebaseio.com",
+    "project_id": "kongfu-d4643",
+    "storage_bucket": "kongfu-d4643.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:306667188077:android:eca532a2567090b1cbb464",
+        "android_client_info": {
+          "package_name": "com.walker.war"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "306667188077-om9mq03unpofk80rq90hct8ukhik1lup.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.walker.war",
+            "certificate_hash": "e22be304356767eab51cfe1ce8123a2e4227e0f6"
+          }
+        },
+        {
+          "client_id": "306667188077-15c0lel865cc50ucnousc9u7dsqtatjb.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD54E_DenUgNCScD_PNNsAAacZNowZ8Iyw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "306667188077-15c0lel865cc50ucnousc9u7dsqtatjb.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

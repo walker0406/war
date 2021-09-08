@@ -6,6 +6,7 @@ import androidx.paging.*
 import com.walker.net.HttpResult
 import com.walker.war.Test
 import com.walker.war.base.AppApiService
+import com.walker.war.base.AppApiService.Companion.apiService
 import com.walker.war.data.MainRepository
 import com.walker.war.data.api.ApiService
 import com.walker.war.data.model.User
@@ -31,6 +32,7 @@ class HomeViewModel @Inject constructor(
         "123"
     }
     var list = MutableLiveData<List<User>>()
+    var listtest = MutableLiveData<List<User>>(null)
 
     var list2 = MutableLiveData<HttpResult<List<User>>>()
 
@@ -78,12 +80,10 @@ class HomeViewModel @Inject constructor(
     //
     suspend fun fetchUsers(): List<User> {
         //  _users.postValue(Resource.loading(null))
-        Log.d("fetuser=", "userid =" + userid.value)
         var list = emptyList<User>()
-        _test.value
         try {
             for (i in 0..10) {
-                Log.d("fetuser=", "exception $i" + AppApiService.create())
+                Log.d("fetuser=", "exception $i" + apiService)
             }
             var respond = appApiService.getUsers()//ayn.getUser()//mainRepository.getUsers()
             list = respond?.body()!!

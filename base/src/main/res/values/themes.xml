@@ -2,8 +2,8 @@
     <!-- Base application theme. -->
     <style name="Theme.War" parent="QMUI.Compat">
         <!-- Primary brand color. -->
-        <item name="colorPrimary">@color/purple_500</item>
-        <item name="colorPrimaryVariant">@color/purple_700</item>
+        <item name="colorPrimary">@color/light_blue_600</item>
+        <item name="colorPrimaryVariant">@color/light_blue_600</item>
         <item name="colorOnPrimary">@color/white</item>
         <!-- Secondary brand color. -->
         <item name="colorSecondary">@color/teal_200</item>
@@ -12,6 +12,16 @@
         <!-- Status bar color. -->
         <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
         <!-- Customize your theme here. -->
+    </style>
+
+    <style name="Theme.War.Fullscreen" parent="Theme.War">
+        <item name="android:actionBarStyle">@style/Widget.Theme.War.ActionBar.Fullscreen</item>
+        <item name="android:windowActionBarOverlay">true</item>
+        <item name="android:windowBackground">@color/light_blue_600</item>
+    </style>
+
+    <style name="ThemeOverlay.War.FullscreenContainer" parent="">
+        <item name="fullscreenBackgroundColor">@color/light_blue_600</item>
     </style>
 
 

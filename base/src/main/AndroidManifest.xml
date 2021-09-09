@@ -5,6 +5,19 @@
     <application
         android:allowBackup="true"
         android:supportsRtl="true"
-        android:theme="@style/Theme.War" />
+        android:theme="@style/Theme.War">
+        <activity
+            android:name="com.walker.splash.SplashActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:exported="true"
+            android:label="@string/app_name"
+            android:theme="@style/Theme.War.Fullscreen">
+
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+    </application>
 
 </manifest>
